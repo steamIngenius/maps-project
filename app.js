@@ -34,8 +34,10 @@ function initialize() {
 	var mapOptions = {
   		center: { lat: 45.578766, lng: -122.724023},
   		zoom: 15,
-  		mapTypeId: google.maps.MapTypeId.ROADMAP
+  		mapTypeId: google.maps.MapTypeId.HYBRID
 	};
+
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
 	var viewModel = {
 		points: ko.observableArray([
@@ -44,7 +46,6 @@ function initialize() {
 			new point('Cha Cha Cha', 45.581943, -122.722083) ])
 	};
 
-	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	ko.applyBindings(viewModel);
 }
 
