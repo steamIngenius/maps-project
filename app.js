@@ -47,6 +47,11 @@ function initialize() {
 	};
 
 	ko.applyBindings(viewModel);
+
+	// TODO: replace with jQuery at some point
+	var input = (document.getElementById('searchbox'));
+
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
