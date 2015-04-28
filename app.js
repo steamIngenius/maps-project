@@ -8,22 +8,8 @@ function point(name, lat, lng) {
         position: new google.maps.LatLng(lat, lng),
         title: name,
         map: map, // global namespace
-        draggable: true
+        draggable: false
     });
-
-    //if you need the poition while dragging
-    google.maps.event.addListener(marker, 'drag', function() {
-        var pos = marker.getPosition();
-        this.lat(pos.lat());
-        this.lng(pos.lng());
-    }.bind(this));
-
-    //if you just need to update it when the user is done dragging
-    google.maps.event.addListener(marker, 'dragend', function() {
-        var pos = marker.getPosition();
-        this.lat(pos.lat());
-        this.lng(pos.lng());
-    }.bind(this));
 }
 
 // Placed the map into the global namespace for now
@@ -59,15 +45,16 @@ function initialize() {
 
 
 	google.maps.event.addListener(searchBox, 'places_changed', function() {
-		var places = searchBox.getPlaces();
-		console.log("List of places retrieved.");
+		var newPlace = (searchBox.getPlaces())[0];
+		// console.log(newPlace);
 
-		console.log(places.length);
-		console.log(places[0]);
-
-		if (places.length == 0) { return; }
+		if (newPlace.length == 0) { return; }
 
 		var bounds = new google.maps.LatLngBounds();
+
+		/* This code is nice for dealing with all the results of your search but
+		   for this project we just want the first thing.
+
 	    for (var i = 0, place; place = places[i]; i++) {
 	      var image = {
 	        url: place.icon,
@@ -91,8 +78,19 @@ function initialize() {
 	      viewModel.points.push(new point(marker.title, marker.position.k, marker.position.D));
 
 	      bounds.extend(place.geometry.location);
-	    }
+	    } */
 
+	    viewModel.points.push( new point(
+	    	newPlace.name,
+	    	newPlace.geometry.location.k,
+	    	newPlace.geometry.location.D) );
+	    // console.log(newPlace);
+
+	    // TODO refactor into a 'center' function or use knockout custom bindings?
+	    ko.utils.arrayForEach(viewModel.points(), function(point) {
+	    	var pointLocation = new google.maps.LatLng(point.lat(), point.lng());
+	    	bounds.extend(pointLocation);
+	    });
 	    map.fitBounds(bounds);
 	});
 
@@ -103,6 +101,11 @@ function initialize() {
     	searchBox.setBounds(bounds);
     	console.log("Bounds updated.");
   	});
+
+
+  	// UI for List of markers (custom control)
+  	var markerListUI = document.getElementById('markerList');
+  	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(markerListUI);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
