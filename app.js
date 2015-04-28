@@ -8,7 +8,8 @@ function point(name, lat, lng) {
         position: new google.maps.LatLng(lat, lng),
         title: name,
         map: map, // global namespace
-        draggable: false
+        draggable: false,
+        animation: google.maps.Animation.DROP
     });
 }
 
