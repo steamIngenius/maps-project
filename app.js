@@ -1,3 +1,4 @@
+// Neighborhood map project
 // referenced http://jsfiddle.net/t9wcC/
 function point(name, lat, lng) {
     this.name = name;
