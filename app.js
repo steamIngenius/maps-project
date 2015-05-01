@@ -84,8 +84,8 @@ function initialize() {
 
 	    viewModel.points.push( new point(
 	    	newPlace.name,
-	    	newPlace.geometry.location.k,
-	    	newPlace.geometry.location.D) );
+	    	newPlace.geometry.location.lat(),
+	    	newPlace.geometry.location.lng()) );
 	    // console.log(newPlace);
 
 	    // TODO refactor into a 'center' function or use knockout custom bindings?
