@@ -18,3 +18,5 @@ None of these are required, but they may be helpful.
 * [MediaWikiAPI for Wikipedia](http://www.mediawiki.org/wiki/API%3aMain_page)
 * [Google Maps Street View Service](https://developers.google.com/maps/documentation/javascript/streetview)
 * [Google Maps](https://developers.google.com/maps/documentation/)
+
+![Evaluation Criteria](http://i.imgur.com/yZUCaoi.png)
