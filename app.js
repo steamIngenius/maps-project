@@ -1,5 +1,7 @@
 // Neighborhood map project
 // referenced http://jsfiddle.net/t9wcC/
+
+// model
 function point(name, lat, lng) {
     this.name = name;
     this.lat = ko.observable(lat);
@@ -20,7 +22,7 @@ var map; // it's a map -- this is a change
 
 function initialize() {
 	var mapOptions = {
-  		center: { lat: 45.578766, lng: -122.724023},
+  		center: { lat: 45.578766, lng: -122.724023 },
   		zoom: 15,
   		mapTypeId: google.maps.MapTypeId.HYBRID
 	};
@@ -28,10 +30,12 @@ function initialize() {
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
 	var viewModel = {
-		points: ko.observableArray([
-			new point('Western Meats', 45.579660, -122.715667),
-			new point('McKenna Park', 45.581673, -122.733106),
-			new point('Cha Cha Cha', 45.581943, -122.722083) ])
+		points: ko.observableArray([]),
+
+		addPoint: function(name, lat, lng) {
+			console.log("I need to make a point here.");
+			this.points.push( new point(name, lat, lng) );
+		}
 	};
 
 	ko.applyBindings(viewModel);
@@ -42,10 +46,10 @@ function initialize() {
 	var input = document.getElementById('searchbox');
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-	// Tie the input to the searchbox
+	// Tie the input view to the searchbox
 	var searchBox = new google.maps.places.SearchBox(input);
 
-
+	// when searchbox gets us a result, do something with it (add to points)
 	google.maps.event.addListener(searchBox, 'places_changed', function() {
 		var newPlace = (searchBox.getPlaces())[0];
 		console.log(newPlace);
@@ -54,10 +58,10 @@ function initialize() {
 
 		var bounds = new google.maps.LatLngBounds();
 
-	    viewModel.points.push( new point(
+	    viewModel.addPoint(
 	    	newPlace.name,
 	    	newPlace.geometry.location.lat(),
-	    	newPlace.geometry.location.lng()) );
+	    	newPlace.geometry.location.lng() );
 	    // console.log(newPlace);
 
 	    // TODO refactor into a 'center' function or use knockout custom bindings?
@@ -76,10 +80,13 @@ function initialize() {
     	console.log("Bounds updated.");
   	});
 
-
   	// UI for List of markers (custom control)
   	var markerListUI = document.getElementById('markerList');
   	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(markerListUI);
+
+  	viewModel.addPoint('Western Meats', 45.579660, -122.715667);
+  	viewModel.addPoint('McKenna Park', 45.581673, -122.733106);
+  	viewModel.addPoint('Cha Cha Cha', 45.581943, -122.722083);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
