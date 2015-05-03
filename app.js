@@ -18,7 +18,7 @@ function point(name, lat, lng) {
 
 // Placed the map into the global namespace for now
 // This makes it easier to experiment with its API from the console
-var map; // it's a map -- this is a change
+var map;
 
 function initialize() {
 	var mapOptions = {
