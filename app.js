@@ -48,39 +48,11 @@ function initialize() {
 
 	google.maps.event.addListener(searchBox, 'places_changed', function() {
 		var newPlace = (searchBox.getPlaces())[0];
-		// console.log(newPlace);
+		console.log(newPlace);
 
 		if (newPlace.length == 0) { return; }
 
 		var bounds = new google.maps.LatLngBounds();
-
-		/* This code is nice for dealing with all the results of your search but
-		   for this project we just want the first thing.
-
-	    for (var i = 0, place; place = places[i]; i++) {
-	      var image = {
-	        url: place.icon,
-	        size: new google.maps.Size(71, 71),
-	        origin: new google.maps.Point(0, 0),
-	        anchor: new google.maps.Point(17, 34),
-	        scaledSize: new google.maps.Size(25, 25)
-	      };
-
-	      // Create a marker for each place.
-	      var marker = new google.maps.Marker({
-	        map: map,
-	        icon: image,
-	        title: place.name,
-	        position: place.geometry.location
-	      });
-
-	      // markers.push(marker);
-	      // viewModel.points.push(marker);
-	      console.log(marker);
-	      viewModel.points.push(new point(marker.title, marker.position.k, marker.position.D));
-
-	      bounds.extend(place.geometry.location);
-	    } */
 
 	    viewModel.points.push( new point(
 	    	newPlace.name,
