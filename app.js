@@ -8,7 +8,7 @@ function point(name, lat, lng) {
     this.lng = ko.observable(lng);
 
     var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(lat, lng),
+        position: new google.maps.LatLng(this.lat(), this.lng()),
         title: name,
         map: map, // global namespace
         draggable: false,
@@ -83,6 +83,12 @@ function initialize() {
   	// UI for List of markers (custom control)
   	var markerListUI = document.getElementById('markerList');
   	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(markerListUI);
+
+  	// start off by adding a few static points to our neighborhood map
+  	/* var chaChaCha = new google.maps.Place( {
+  		location: new google.maps.LatLng( 45.581943, -122.722083 ),
+  		placeId: 'Cha Cha Cha'
+  	} ); */
 
   	viewModel.addPoint('Western Meats', 45.579660, -122.715667);
   	viewModel.addPoint('McKenna Park', 45.581673, -122.733106);
