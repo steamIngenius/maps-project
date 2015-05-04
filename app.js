@@ -20,6 +20,8 @@ function point(name, lat, lng) {
     });
 }
 
+// get things moving with a Gooble maps event listener and an anonymous function
+// once everything has loaded, of course
 google.maps.event.addDomListener(window, 'load', function() {
 
 	var viewModel = {
@@ -88,6 +90,7 @@ google.maps.event.addDomListener(window, 'load', function() {
 		}
 	};
 
+	// bind knockout and init
 	ko.applyBindings(viewModel);
 	viewModel.initialize();
 
