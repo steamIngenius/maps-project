@@ -20,7 +20,7 @@ function point(name, lat, lng) {
     });
 }
 
-function initialize() {
+google.maps.event.addDomListener(window, 'load', function() {
 	var mapOptions = {
   		center: { lat: 45.578766, lng: -122.724023 },
   		zoom: 15,
@@ -93,6 +93,4 @@ function initialize() {
   	viewModel.addPoint('Western Meats', 45.579660, -122.715667);
   	viewModel.addPoint('McKenna Park', 45.581673, -122.733106);
   	viewModel.addPoint('Cha Cha Cha', 45.581943, -122.722083);
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);
+} );
