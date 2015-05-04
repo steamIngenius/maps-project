@@ -1,7 +1,11 @@
 // Neighborhood map project
-// referenced http://jsfiddle.net/t9wcC/
+
+// Placed the map into the global namespace for now
+// This makes it easier to experiment with its API from the console
+var map;
 
 // model
+// This is a function declaration
 function point(name, lat, lng) {
     this.name = name;
     this.lat = ko.observable(lat);
@@ -15,10 +19,6 @@ function point(name, lat, lng) {
         animation: google.maps.Animation.DROP
     });
 }
-
-// Placed the map into the global namespace for now
-// This makes it easier to experiment with its API from the console
-var map;
 
 function initialize() {
 	var mapOptions = {
