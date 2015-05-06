@@ -4,26 +4,27 @@
 // This makes it easier to experiment with its API from the console
 var map;
 
-// model
-// This is a function declaration
-function point(name, lat, lng) {
-    this.name = name;
-    this.lat = ko.observable(lat);
-    this.lng = ko.observable(lng);
-
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(this.lat(), this.lng()),
-        title: name,
-        map: map, // global namespace
-        draggable: false,
-        animation: google.maps.Animation.DROP
-    });
-}
-
 // get things moving with a Gooble maps event listener and an anonymous function
 // once everything has loaded, of course
 google.maps.event.addDomListener(window, 'load', function() {
 
+	// model
+	// This is a function declaration
+	function point(name, lat, lng) {
+	    this.name = name;
+	    this.lat = ko.observable(lat);
+	    this.lng = ko.observable(lng);
+
+	    var marker = new google.maps.Marker({
+	        position: new google.maps.LatLng(this.lat(), this.lng()),
+	        title: name,
+	        map: map, // global namespace
+	        draggable: false,
+	        animation: google.maps.Animation.DROP
+	    });
+	}
+
+	// this is the view model (duh, look at the name)
 	var viewModel = {
 		initialize: function() {
 			this.setupMap();
