@@ -28,9 +28,22 @@ var viewModel = {
 	},
 	points: ko.observableArray([]),
 
-	addPoint: function(name, lat, lng) {
+	// accepts a google.maps.Place object
+	addPoint: function(place) {
 		console.log("I need to make a point here.");
-		this.points.push( new point(name, lat, lng) );
+		console.log(place);
+		this.points.push(
+			new point(place.name,
+				place.geometry.location.lat(),
+				place.geometry.location.lng()
+			)
+		);
+
+		// this seems like a good place for our ajaxy stuff no?
+		// make ajax call to our api Flickr
+		// grab gooble street view? ( I think so, yes )
+		// create info window with data
+		// hook the info window to our ui
 	},
 	setupMap: function() {
 		var mapOptions = {
@@ -59,10 +72,10 @@ var viewModel = {
 
 			var bounds = new google.maps.LatLngBounds();
 
-		    viewModel.addPoint(
-		    	newPlace.name,
+		    viewModel.addPoint( newPlace );
+		    	/* newPlace.name,
 		    	newPlace.geometry.location.lat(),
-		    	newPlace.geometry.location.lng() );
+		    	newPlace.geometry.location.lng() ); */
 		    // console.log(newPlace);
 
 		    // TODO refactor into a 'center' function or use knockout custom bindings?
@@ -95,7 +108,24 @@ google.maps.event.addDomListener(window, 'load', function() {
 	viewModel.initialize();
 
   	// start off by adding a few static points to our neighborhood map
-  	viewModel.addPoint('Western Meats', 45.579660, -122.715667);
-  	viewModel.addPoint('McKenna Park', 45.581673, -122.733106);
-  	viewModel.addPoint('Cha Cha Cha', 45.581943, -122.722083);
+  	viewModel.addPoint({
+  		name: 'Western Meats',
+  		geometry: {
+  			location: new google.maps.LatLng(45.579660, -122.715667)
+  		}
+  	});
+
+  	viewModel.addPoint({
+  		name: 'McKenna Park',
+  		geometry: {
+  			location: new google.maps.LatLng(45.581673, -122.733106)
+  		}
+  	});
+
+  	viewModel.addPoint({
+  		name: 'Cha Cha Cha',
+  		geometry: {
+  			location: new google.maps.LatLng(45.581943, -122.722083)
+  		}
+  	});
 } );
