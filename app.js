@@ -44,7 +44,14 @@ var viewModel = {
 		// TODO: construct URL using place
 		$.ajax({
 			type: 'GET',
-			url: 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=90196c34360d477a22de67a766021b52&format=rest&has_geo=1&lat=45.578766&lon=-122.724023&radius=.1',
+			url: 'https://api.flickr.com/services/rest/?'+
+				'method=flickr.photos.search&'+
+				'api_key=90196c34360d477a22de67a766021b52&'+
+				'format=rest&'+
+				'has_geo=1&'+
+				'lat='+place.geometry.location.lat()+ // 45.578766&'+
+				'lon='+place.geometry.location.lng()+ // -122.724023&'+
+				'radius=.1',
 			datatype: 'json',
 			success: function (data) {
 				console.log(data);
