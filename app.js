@@ -31,6 +31,13 @@ function point(name, lat, lng) {
 			console.log('Success fired.');
 			console.log(data);
 			console.log(status);
+			// TODO construct URLs (and make it prettier than this crap)
+			for (var i = 0; i < data.photos.photo.length; i++) {
+				console.log(data.photos.photo[i].farm);
+				console.log(data.photos.photo[i].server);
+				console.log(data.photos.photo[i].id);
+				console.log(data.photos.photo[i].secret);
+			}
 		},
 		error: function (message) {
 			console.log('An error occurred: ');
@@ -41,8 +48,6 @@ function point(name, lat, lng) {
 		}
 	});
 	// TODO: grab gooble street view? ( I think so, yes )
-	// TODO: create info window with data
-	// TODO: hook the info window to our ui
 
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(this.lat(), this.lng()),
@@ -52,10 +57,12 @@ function point(name, lat, lng) {
         animation: google.maps.Animation.DROP
     });
 
+	// TODO: create info window with data
     var infowindow = new google.maps.InfoWindow({
     	content: "<div>Hello World!</div>"
     });
 
+	// TODO: hook the info window to our ui
     google.maps.event.addListener(marker, 'click', function() {
     	infowindow.open(map, marker);
     });
