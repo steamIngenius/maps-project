@@ -11,12 +11,53 @@ function point(name, lat, lng) {
     this.lat = ko.observable(lat);
     this.lng = ko.observable(lng);
 
+	// make ajax call to our api Flickr
+	// TODO: construct URL using place
+	$.ajax({
+		type: 'GET',
+		url: 'https://api.flickr.com/services/rest/?'+
+			'method=flickr.photos.search&'+
+			'api_key=90196c34360d477a22de67a766021b52&'+
+			'format=rest&'+
+			'has_geo=1&'+
+			'lat='+this.lat()+'&'+ // 45.578766&'+
+			'lon='+this.lng()+'&'+ // -122.724023&'+
+			'radius=1&'+
+			'per_page=5&'+
+			'format=json&'+
+			'nojsoncallback=1',
+		datatype: 'jsonp',
+		success: function (data, status) {
+			console.log('Success fired.');
+			console.log(data);
+			console.log(status);
+		},
+		error: function (message) {
+			console.log('An error occurred: ');
+			console.log(message);
+		},
+		complete: function() {
+			console.log('Complete fired.');
+		}
+	});
+	// TODO: grab gooble street view? ( I think so, yes )
+	// TODO: create info window with data
+	// TODO: hook the info window to our ui
+
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(this.lat(), this.lng()),
         title: name,
         map: map, // global namespace
         draggable: false,
         animation: google.maps.Animation.DROP
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+    	content: "<div>Hello World!</div>"
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+    	infowindow.open(map, marker);
     });
 }
 
@@ -40,27 +81,7 @@ var viewModel = {
 		);
 
 		// this seems like a good place for our ajaxy stuff no?
-		// make ajax call to our api Flickr
-		// TODO: construct URL using place
-		$.ajax({
-			type: 'GET',
-			url: 'https://api.flickr.com/services/rest/?'+
-				'method=flickr.photos.search&'+
-				'api_key=90196c34360d477a22de67a766021b52&'+
-				'format=rest&'+
-				'has_geo=1&'+
-				'lat='+place.geometry.location.lat()+'&'+ // 45.578766&'+
-				'lon='+place.geometry.location.lng()+'&'+ // -122.724023&'+
-				'radius=1&'+
-				'per_page=5',
-			datatype: 'json',
-			success: function (data) {
-				console.log(data);
-			}
-		});
-		// TODO: grab gooble street view? ( I think so, yes )
-		// TODO: create info window with data
-		// TODO: hook the info window to our ui
+		// actually, no - Addy Osmoni recommends ajax go in the model
 	},
 	setupMap: function() {
 		var mapOptions = {
@@ -83,7 +104,7 @@ var viewModel = {
 		// when searchbox gets us a result, do something with it (add to points)
 		google.maps.event.addListener(searchBox, 'places_changed', function() {
 			var newPlace = (searchBox.getPlaces())[0];
-			console.log(newPlace);
+			// console.log(newPlace);
 
 			if (newPlace.length == 0) { return; }
 
