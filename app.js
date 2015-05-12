@@ -18,14 +18,14 @@ function point(name, lat, lng) {
 		url: 'https://api.flickr.com/services/rest/?'+
 			'method=flickr.photos.search&'+
 			'api_key=90196c34360d477a22de67a766021b52&'+
-			'format=rest&'+
-			'has_geo=1&'+
-			'lat='+this.lat()+'&'+ // 45.578766&'+
-			'lon='+this.lng()+'&'+ // -122.724023&'+
-			'radius=1&'+
-			'per_page=5&'+
-			'format=json&'+
-			'nojsoncallback=1',
+			// 'format=rest&'+
+			'has_geo=1&'+		// get geotagged photos
+			'lat='+this.lat()+'&'+ // not sure why these are ko.observables
+			'lon='+this.lng()+'&'+
+			'radius=1&'+		// photos within 1km
+			'per_page=5&'+		// 5 items for each marker
+			'format=json&'+ 	// Give me JSON
+			'nojsoncallback=1', // Give me plain JSON with no callback funtion
 		datatype: 'jsonp',
 		success: function (data, status) {
 			console.log('Success fired.');
