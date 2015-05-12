@@ -49,9 +49,10 @@ var viewModel = {
 				'api_key=90196c34360d477a22de67a766021b52&'+
 				'format=rest&'+
 				'has_geo=1&'+
-				'lat='+place.geometry.location.lat()+ // 45.578766&'+
-				'lon='+place.geometry.location.lng()+ // -122.724023&'+
-				'radius=.1',
+				'lat='+place.geometry.location.lat()+'&'+ // 45.578766&'+
+				'lon='+place.geometry.location.lng()+'&'+ // -122.724023&'+
+				'radius=1'+
+				'per_page=5',
 			datatype: 'json',
 			success: function (data) {
 				console.log(data);
