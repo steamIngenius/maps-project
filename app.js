@@ -51,7 +51,7 @@ var viewModel = {
 				'has_geo=1&'+
 				'lat='+place.geometry.location.lat()+'&'+ // 45.578766&'+
 				'lon='+place.geometry.location.lng()+'&'+ // -122.724023&'+
-				'radius=1'+
+				'radius=1&'+
 				'per_page=5',
 			datatype: 'json',
 			success: function (data) {
