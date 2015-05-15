@@ -10,6 +10,9 @@ function point(name, lat, lng) {
     this.name = name;
     this.lat = ko.observable(lat);
     this.lng = ko.observable(lng);
+    this.images = ko.observableArray();
+
+    var self = this;
 
 	// make ajax call to our api Flickr
 	// TODO: construct URL using place
@@ -20,7 +23,7 @@ function point(name, lat, lng) {
 			'api_key=90196c34360d477a22de67a766021b52&'+
 			// 'format=rest&'+
 			'has_geo=1&'+		// get geotagged photos
-			'lat='+this.lat()+'&'+ // not sure why these are ko.observables
+			'lat='+this.lat()+'&'+ // not sure why these are ko.observables, I'm not doing anything ui with them (yet)
 			'lon='+this.lng()+'&'+
 			'radius=1&'+		// photos within 1km
 			'per_page=5&'+		// 5 items for each marker
@@ -31,12 +34,21 @@ function point(name, lat, lng) {
 			console.log('Success fired.');
 			console.log(data);
 			console.log(status);
+			var photos = data.photos.photo;
 			// TODO construct URLs (and make it prettier than this crap)
-			for (var i = 0; i < data.photos.photo.length; i++) {
-				console.log(data.photos.photo[i].farm);
-				console.log(data.photos.photo[i].server);
-				console.log(data.photos.photo[i].id);
-				console.log(data.photos.photo[i].secret);
+			for (var i = 0; i < photos.length; i++) {
+				console.log(photos[i].farm);
+				console.log(photos[i].server);
+				console.log(photos[i].id);
+				console.log(photos[i].secret);
+				self.images.push(
+					'https://farm'+
+					photos[i].farm+
+					'.staticflickr.com/'+
+					photos[i].server+'/'+
+					photos[i].id+'_'+
+					photos[i].secret+
+					'_b.jpg');
 			}
 		},
 		error: function (message) {
@@ -59,7 +71,7 @@ function point(name, lat, lng) {
 
 	// TODO: create info window with data
     var infowindow = new google.maps.InfoWindow({
-    	content: "<div>Hello World!</div>"
+    	content: "<div data-bind=\"foreach: \"></div>"
     });
 
 	// TODO: hook the info window to our ui
