@@ -1,6 +1,6 @@
 #Scratchpad
 
-https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
+https://farm{farm-id}.staticflickr.com/{server-id}/{id}\_{secret}\_[mstzb].jpg
 
 `<photo id="17439790412" owner="16468176@N00" secret="d7f6b90bc3" server="5459" farm="6" title="Pussy-toes" ispublic="1" isfriend="0" isfamily="0"></photo>`
 
