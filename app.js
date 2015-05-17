@@ -57,6 +57,8 @@ function point(name, lat, lng) {
 		},
 		complete: function() {
 			console.log('Complete fired.');
+			// update InfoWindow content
+			infowindow.setContent("<img src=\""+self.images()[4]+"\" \\>");
 		}
 	});
 	// TODO: grab gooble street view? ( I think so, yes )
@@ -72,7 +74,7 @@ function point(name, lat, lng) {
 	// TODO: create info window with data
 	// use knockout.js data-bind?
     var infowindow = new google.maps.InfoWindow({
-    	content: "<div data-bind=\"with: \"><div data-bind=\"foreach: \"></div></div>"
+    	content: ""
     });
 
 	// TODO: hook displaying the info window to our ui
