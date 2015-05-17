@@ -70,11 +70,12 @@ function point(name, lat, lng) {
     });
 
 	// TODO: create info window with data
+	// use knockout.js data-bind?
     var infowindow = new google.maps.InfoWindow({
-    	content: "<div data-bind=\"foreach: \"></div>"
+    	content: "<div data-bind=\"with: \"><div data-bind=\"foreach: \"></div></div>"
     });
 
-	// TODO: hook the info window to our ui
+	// TODO: hook displaying the info window to our ui
     google.maps.event.addListener(marker, 'click', function() {
     	infowindow.open(map, marker);
     });
