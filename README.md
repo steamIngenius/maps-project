@@ -1,5 +1,7 @@
 # Neighborhood Maps Application
 
+###To Run:
+Fire up your favorite web server (e.g. node `http-server`) and point your browser at index.html.
 ## How will I complete this Project?
 
 1. Review our course [JavaScript Design Patterns](https://www.udacity.com/course/ud989-nd).
