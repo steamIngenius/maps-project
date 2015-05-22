@@ -15,7 +15,7 @@
   <body>
     <input id="searchbox" class="controls" type="text" placeholder="Search Box">
     <ul id="markerList" class="controls" data-bind="foreach: points">
-      <li data-bind="text: name"></li>
+      <li data-bind="text: name, click: showInfo"></li>
     </ul>
     <div id="map-canvas"></div>
     <script type="text/javascript" src="app.js"></script>

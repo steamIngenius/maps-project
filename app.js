@@ -7,12 +7,23 @@ var map;
 // model
 // This is a function declaration
 function point(name, lat, lng) {
-    this.name = name;
-    this.lat = ko.observable(lat);
-    this.lng = ko.observable(lng);
-    this.images = ko.observableArray();
-
     var self = this;
+
+    self.name = name;
+    self.lat = ko.observable(lat);
+    self.lng = ko.observable(lng);
+    self.images = ko.observableArray();
+    self.marker = new google.maps.Marker({
+        position: new google.maps.LatLng(this.lat(), this.lng()),
+        title: name,
+        map: map, // global namespace
+        draggable: false,
+        animation: google.maps.Animation.DROP
+    });
+    self.infowindow = new google.maps.InfoWindow({ content: "" });
+    self.showInfo = function() {
+    	self.infowindow.open(map, marker);
+    };
 
 	// make ajax call to our api Flickr
 	// TODO: construct URL using place
@@ -23,8 +34,8 @@ function point(name, lat, lng) {
 			'api_key=90196c34360d477a22de67a766021b52&'+
 			// 'format=rest&'+
 			'has_geo=1&'+		// get geotagged photos
-			'lat='+this.lat()+'&'+ // not sure why these are ko.observables, I'm not doing anything ui with them (yet)
-			'lon='+this.lng()+'&'+
+			'lat='+self.lat()+'&'+ // not sure why these are ko.observables, I'm not doing anything ui with them (yet)
+			'lon='+self.lng()+'&'+
 			'radius=1&'+		// photos within 1km
 			'per_page=5&'+		// 5 items for each marker
 			'format=json&'+ 	// Give me JSON
@@ -58,13 +69,15 @@ function point(name, lat, lng) {
 		complete: function() {
 			console.log('Complete fired.');
 			// update InfoWindow content
-			infowindow.setContent("<img src=\""+self.images()[4]+"\" \\>");
+			self.infowindow.setContent("<img src=\""+self.images()[4]+"\" \\>");
+		    // listener for clicking the marker to display infowindow
+		    google.maps.event.addListener(marker, 'click', self.showInfo);
 		}
 	});
 	// TODO: grab gooble street view? ( I think so, yes )
 
     var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(this.lat(), this.lng()),
+        position: new google.maps.LatLng(self.lat(), self.lng()),
         title: name,
         map: map, // global namespace
         draggable: false,
@@ -73,14 +86,8 @@ function point(name, lat, lng) {
 
 	// TODO: create info window with data
 	// use knockout.js data-bind?
-    var infowindow = new google.maps.InfoWindow({
-    	content: ""
-    });
+    // var infowindow = new google.maps.InfoWindow({ content: "" });
 
-	// TODO: hook displaying the info window to our ui
-    google.maps.event.addListener(marker, 'click', function() {
-    	infowindow.open(map, marker);
-    });
 }
 
 // this is the view model (duh, look at the name)
