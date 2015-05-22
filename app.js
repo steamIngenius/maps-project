@@ -5,10 +5,10 @@
 var map;
 
 // model
-// This is a function declaration
 function point(name, lat, lng) {
     var self = this;
 
+    // data
     self.name = name;
     self.lat = ko.observable(lat);
     self.lng = ko.observable(lng);
@@ -22,7 +22,8 @@ function point(name, lat, lng) {
     });
     // store default icon for later retrieval
     self.oIcon = self.marker.getIcon();
-    // self.infowindow = new google.maps.InfoWindow({ content: "" });
+
+    // behavior
     self.showInfo = function() {
     	// center the map on the clicked marker
     	map.setCenter(self.marker.getPosition());
@@ -34,8 +35,11 @@ function point(name, lat, lng) {
 		// update InfoWindow content
 		if (viewModel.infowindow.currentPoint) viewModel.infowindow.currentPoint.revertIcon();
 
+		// set the new current point
 		viewModel.infowindow.currentPoint = self;
+		// set the infowindow's new content
 		viewModel.infowindow.setContent("<img class=\"info-image\" src=\""+self.images()[4]+"\" \\>");
+		// show that sucker and change the icon!
     	viewModel.infowindow.open(map, self.marker);
     	self.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
     };
@@ -46,8 +50,7 @@ function point(name, lat, lng) {
     	self.marker.setIcon(self.oIcon);
     };
 
-	// make ajax call to our api Flickr
-	// TODO: construct URL using place
+	// make ajax call to our api: Flickr
 	$.ajax({
 		type: 'GET',
 		url: 'https://api.flickr.com/services/rest/?'+
@@ -67,7 +70,7 @@ function point(name, lat, lng) {
 			console.log(data);
 			console.log(status);
 			var photos = data.photos.photo;
-			// TODO construct URLs (and make it prettier than this crap)
+			// construct URLs 
 			for (var i = 0; i < photos.length; i++) {
 				console.log(photos[i].farm);
 				console.log(photos[i].server);
@@ -95,7 +98,7 @@ function point(name, lat, lng) {
 	});
 }
 
-// this is the view model (duh, look at the name)
+// this is the view model
 var viewModel = {
 	initialize: function() {
 		this.origin = new google.maps.LatLng(45.578766, -122.724023);
@@ -119,6 +122,7 @@ var viewModel = {
 
 		// this seems like a good place for our ajaxy stuff no?
 		// actually, no - Addy Osmoni recommends ajax go in the model
+		// initially, this ran counterintuitive to my mind, but it makes a lot of sense with MVVM
 	},
 	setupMap: function() {
 		var mapOptions = {
@@ -131,7 +135,6 @@ var viewModel = {
 	},
 	setupControls: function() {
 		// Searchbox functionality
-		// TODO: replace with jQuery at some point?
 		// referenced: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
 		var input = document.getElementById('searchbox');
 		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -148,12 +151,8 @@ var viewModel = {
 			var bounds = new google.maps.LatLngBounds();
 
 		    viewModel.addPoint( newPlace );
-		    	/* newPlace.name,
-		    	newPlace.geometry.location.lat(),
-		    	newPlace.geometry.location.lng() ); */
-		    // console.log(newPlace);
 
-		    // TODO refactor into a 'center' function or use knockout custom bindings?
+		    // center our map using all of our current points of interest
 		    ko.utils.arrayForEach(viewModel.points(), function(point) {
 		    	var pointLocation = new google.maps.LatLng(point.lat(), point.lng());
 		    	bounds.extend(pointLocation);
@@ -178,7 +177,7 @@ var viewModel = {
 // get things moving with a Gooble maps event listener and an anonymous function
 // once everything has loaded, of course
 google.maps.event.addDomListener(window, 'load', function() {
-	// bind knockout and init
+	// bind knockoutjs and init
 	ko.applyBindings(viewModel);
 	viewModel.initialize();
 
