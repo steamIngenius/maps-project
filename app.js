@@ -20,13 +20,23 @@ function point(name, lat, lng) {
         draggable: false,
         animation: google.maps.Animation.DROP
     });
+    // store default icon for later retrieval
     self.oIcon = self.marker.getIcon();
-    self.infowindow = new google.maps.InfoWindow({ content: "" });
+    // self.infowindow = new google.maps.InfoWindow({ content: "" });
     self.showInfo = function() {
     	// center the map on the clicked marker
     	map.setCenter(self.marker.getPosition());
-    	
-    	self.infowindow.open(map, self.marker);
+
+	    // listener for changing the icon back after window is closed
+	    google.maps.event.addListener(viewModel.infowindow, 'closeclick', self.revertIcon);
+
+    	// set infowindow to random image from self.images
+		// update InfoWindow content
+		if (viewModel.infowindow.currentPoint) viewModel.infowindow.currentPoint.revertIcon();
+
+		viewModel.infowindow.currentPoint = self;
+		viewModel.infowindow.setContent("<img class=\"info-image\" src=\""+self.images()[4]+"\" \\>");
+    	viewModel.infowindow.open(map, self.marker);
     	self.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
     };
     self.revertIcon = function() {
@@ -79,37 +89,22 @@ function point(name, lat, lng) {
 		},
 		complete: function() {
 			console.log('Complete fired.');
-			// update InfoWindow content
-			self.infowindow.setContent("<img class=\"info-image\" src=\""+self.images()[4]+"\" \\>");
 		    // listener for clicking the marker to display infowindow
 		    google.maps.event.addListener(self.marker, 'click', self.showInfo);
-		    // listener for changing the icon back after window is closed
-		    google.maps.event.addListener(self.infowindow, 'closeclick', self.revertIcon);
 		}
 	});
-	// TODO: grab gooble street view? ( I think so, yes )
-
-    /* var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(self.lat(), self.lng()),
-        title: name,
-        map: map, // global namespace
-        draggable: false,
-        animation: google.maps.Animation.DROP
-    }); */
-
-	// TODO: create info window with data
-	// use knockout.js data-bind?
-    // var infowindow = new google.maps.InfoWindow({ content: "" });
-
 }
 
 // this is the view model (duh, look at the name)
 var viewModel = {
 	initialize: function() {
+		this.origin = new google.maps.LatLng(45.578766, -122.724023);
 		this.setupMap();
 		this.setupControls();
+		this.infowindow.currentPoint = undefined;
 	},
 	points: ko.observableArray([]),
+	infowindow: new google.maps.InfoWindow({ content: "" }),
 
 	// accepts a google.maps.Place object
 	addPoint: function(place) {
@@ -127,7 +122,7 @@ var viewModel = {
 	},
 	setupMap: function() {
 		var mapOptions = {
-	  		center: { lat: 45.578766, lng: -122.724023 },
+	  		center: this.origin, // { lat: 45.578766, lng: -122.724023 },
 	  		zoom: 15,
 	  		mapTypeId: google.maps.MapTypeId.HYBRID
 		};
