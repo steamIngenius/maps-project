@@ -20,9 +20,14 @@ function point(name, lat, lng) {
         draggable: false,
         animation: google.maps.Animation.DROP
     });
+    self.oIcon = self.marker.getIcon();
     self.infowindow = new google.maps.InfoWindow({ content: "" });
     self.showInfo = function() {
-    	self.infowindow.open(map, marker);
+    	self.infowindow.open(map, self.marker);
+    	self.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
+    };
+    self.revertIcon = function() {
+    	self.marker.setIcon(self.oIcon);
     };
 
 	// make ajax call to our api Flickr
@@ -71,18 +76,19 @@ function point(name, lat, lng) {
 			// update InfoWindow content
 			self.infowindow.setContent("<img src=\""+self.images()[4]+"\" \\>");
 		    // listener for clicking the marker to display infowindow
-		    google.maps.event.addListener(marker, 'click', self.showInfo);
+		    google.maps.event.addListener(self.marker, 'click', self.showInfo);
+		    google.maps.event.addListener(self.infowindow, 'closeclick', self.revertIcon);
 		}
 	});
 	// TODO: grab gooble street view? ( I think so, yes )
 
-    var marker = new google.maps.Marker({
+    /* var marker = new google.maps.Marker({
         position: new google.maps.LatLng(self.lat(), self.lng()),
         title: name,
         map: map, // global namespace
         draggable: false,
         animation: google.maps.Animation.DROP
-    });
+    }); */
 
 	// TODO: create info window with data
 	// use knockout.js data-bind?
