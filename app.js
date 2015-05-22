@@ -23,10 +23,16 @@ function point(name, lat, lng) {
     self.oIcon = self.marker.getIcon();
     self.infowindow = new google.maps.InfoWindow({ content: "" });
     self.showInfo = function() {
+    	// center the map on the clicked marker
+    	map.setCenter(self.marker.getPosition());
+    	
     	self.infowindow.open(map, self.marker);
     	self.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
     };
     self.revertIcon = function() {
+    	// center the map on the clicked marker
+    	map.setCenter(self.marker.getPosition());
+
     	self.marker.setIcon(self.oIcon);
     };
 
@@ -43,7 +49,7 @@ function point(name, lat, lng) {
 			'lon='+self.lng()+'&'+
 			'radius=1&'+		// photos within 1km
 			'per_page=5&'+		// 5 items for each marker
-			'format=json&'+ 	// Give me JSON
+			'format=json&'+ 	// Give me JSON instead of say XML
 			'nojsoncallback=1', // Give me plain JSON with no callback funtion
 		datatype: 'jsonp',
 		success: function (data, status) {
@@ -74,9 +80,10 @@ function point(name, lat, lng) {
 		complete: function() {
 			console.log('Complete fired.');
 			// update InfoWindow content
-			self.infowindow.setContent("<img src=\""+self.images()[4]+"\" \\>");
+			self.infowindow.setContent("<img class=\"info-image\" src=\""+self.images()[4]+"\" \\>");
 		    // listener for clicking the marker to display infowindow
 		    google.maps.event.addListener(self.marker, 'click', self.showInfo);
+		    // listener for changing the icon back after window is closed
 		    google.maps.event.addListener(self.infowindow, 'closeclick', self.revertIcon);
 		}
 	});
