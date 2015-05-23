@@ -38,8 +38,8 @@ function point(name, lat, lng) {
 		// set the new current point
 		viewModel.infowindow.currentPoint = self;
 		// set the infowindow's new content
-		viewModel.infowindow.setContent("<img class=\"info-image\" src=\""+self.images()[4]+"\" \\>");
-		// show that sucker and change the icon!
+		viewModel.infowindow.setContent("<img id=\"info-image\" src=\""+self.images()[4]+"\" \\>");
+		// show infowindow and change the marker's icon!
     	viewModel.infowindow.open(map, self.marker);
     	self.marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
     };
@@ -132,6 +132,24 @@ var viewModel = {
 		};
 
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		google.maps.event.addDomListener(window, "resize", function() {
+			var center = map.getCenter();
+			google.maps.event.trigger(map, "resize");
+			map.setCenter(center);
+
+			// reopen the infowindow when the map is resized to make it responsive
+			if (viewModel.infowindow.getMap()) viewModel.infowindow.open(map);
+		});
+
+		// scale image responsively according to the size of the InfoWindow
+		google.maps.event.addListener(viewModel.infowindow, 'domready', function() {
+			var maxHeight = $('#info-image').parent().parent().css('max-height');
+			var maxWidth = $('#info-image').parent().parent().css('max-width');
+
+			$('#info-image').css('max-height', maxHeight);
+			$('#info-image').css('max-width', maxWidth);
+		});
 	},
 	setupControls: function() {
 		// Searchbox functionality
