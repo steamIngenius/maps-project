@@ -14,7 +14,7 @@ function point(name, lat, lng) {
     self.lng = ko.observable(lng);
     self.images = ko.observableArray();
     self.marker = new google.maps.Marker({
-        position: new google.maps.LatLng(this.lat(), this.lng()),
+        position: new google.maps.LatLng(self.lat(), self.lng()),
         title: name,
         map: map, // global namespace
         draggable: false,
@@ -33,7 +33,7 @@ function point(name, lat, lng) {
 
         // set infowindow to random image from self.images
         // update InfoWindow content
-        if (viewModel.infowindow.currentPoint) viewModel.infowindow.currentPoint.revertIcon();
+        if (viewModel.infowindow.currentPoint) { viewModel.infowindow.currentPoint.revertIcon(); }
 
         // set the new current point
         viewModel.infowindow.currentPoint = self;
@@ -164,7 +164,7 @@ var viewModel = {
             var newPlace = (searchBox.getPlaces())[0];
             // console.log(newPlace);
 
-            if (newPlace.length == 0) { return; }
+            if (newPlace.length === 0) { return; }
 
             var bounds = new google.maps.LatLngBounds();
 
